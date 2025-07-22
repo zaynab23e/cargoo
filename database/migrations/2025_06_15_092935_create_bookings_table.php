@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void 
-    { 
-        Schema::create('bookings', function (Blueprint $table) {
+    public function up(): void
+    {
+            Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('car_id')->nullable();
             $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
@@ -25,10 +25,11 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->decimal('final_price', 10, places: 2);
-            $table->enum('status', ['pending', 'confirmed', 'assigned', 'canceled', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'on_the_way', 'assigned', 'canceled', 'completed'])->default('pending');
             $table->timestamps();
-        });
-    }
+    });
+     
+    }   
 
     /**
      * Reverse the migrations.

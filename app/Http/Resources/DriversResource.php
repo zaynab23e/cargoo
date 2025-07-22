@@ -14,15 +14,16 @@ class DriversResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $latestLocation = $this->driverLocations()->latest()->first();
         return [
                 'id' => $this->id,
                 'attributes' =>[
                     'name' => $this->name,
                     'email' => $this->email,
                     'phone' => $this->phone,
-                'location' => $this->location,
-                'latitude' => $this->latitude,
-                'longitude' => $this->longitude,
+                'location' => optional($latestLocation)->location,
+                'latitude' => optional($latestLocation)->latitude,
+                'longitude' => optional($latestLocation)->longitude,
                 ],
             
                 

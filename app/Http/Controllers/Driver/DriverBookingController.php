@@ -78,7 +78,7 @@ public function carOnTheWay(Request $request, $id)
         ], 404);
     }
 
-    $booking->status ='pending';
+    $booking->status ='assigned'; 
     $booking->save();
 
     return response()->json([

@@ -84,7 +84,9 @@ public function update(Request $request, $id)
     return response()->json([
         'status'  => 'success',
         'message' => __('messages.updated_successfully'),
-        'data'    => $driver,
+        'data'    => collect($driver->toArray())->filter(function ($value) {
+        return !is_null($value);
+    })->all(),
     ], 200);
 }
 

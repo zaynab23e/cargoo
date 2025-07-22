@@ -110,31 +110,31 @@ public function carOnTheWay(Request $request, $id)
         $data = $bookings->map(function ($booking) {
             return [
                 'id' => $booking->id,
-                'start_date' => $booking->start_date,
-                'end_date'   => $booking->end_date,
-                'status'   => $booking->status,
+                // 'start_date' => $booking->start_date,
+                // 'end_date'   => $booking->end_date,
+                // 'status'   => $booking->status,
                 'payment_method'   => $booking->payment_method,
                 'final_price'   => $booking->final_price,
-                'car_model_id' => optional($booking->carModel)->id,
+                // 'car_model_id' => optional($booking->carModel)->id,
                 'model_name'     => optional(optional($booking->carModel)->modelName)->name,
                 'car_model_year' => optional($booking->carModel)->year,
                 'car_model_image' => asset(optional($booking->carModel)->image),
                 'Ratings' => [
-                    'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
+                    // 'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
                     'ratings_count' => $booking->carModel->ratings->count(),
                 ],
                 'brand_name'     => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
                 'car_plate_number' => optional($booking->car)->plate_number,               
                 'car_color' => optional($booking->car)->color,               
                 'user_name' => optional($booking->user)->name,
-                'user_email' => optional($booking->user)->email,
+                // 'user_email' => optional($booking->user)->email,
                 'user_phone' => optional($booking->user)->phone,
                 'driver_name' => optional($booking->driver)->name,
-                'driver_email' => optional($booking->driver)->email,
+                // 'driver_email' => optional($booking->driver)->email,
                 'driver_phone' => optional($booking->driver)->phone,
                 'location' => optional($booking->location)->location,
-                'latitude' => optional($booking->location)->latitude,
-                'longitude' => optional($booking->location)->longitude,
+            //     'latitude' => optional($booking->location)->latitude,
+            //     'longitude' => optional($booking->location)->longitude,
             ];
         });
 
@@ -164,31 +164,31 @@ public function carOnTheWay(Request $request, $id)
         $data = $bookings->map(function ($booking) {
             return [
                 'id' => $booking->id,
-                'start_date' => $booking->start_date,
-                'end_date'   => $booking->end_date,
-                'status'   => $booking->status,
+                // 'start_date' => $booking->start_date,
+                // 'end_date'   => $booking->end_date,
+                // 'status'   => $booking->status,
                 'payment_method'   => $booking->payment_method,
                 'final_price'   => $booking->final_price,
-                'car_model_id' => optional($booking->carModel)->id,
+                // 'car_model_id' => optional($booking->carModel)->id,
                 'model_name'     => optional(optional($booking->carModel)->modelName)->name,
                 'car_model_year' => optional($booking->carModel)->year,
                 'car_model_image' => asset(optional($booking->carModel)->image),
                 'Ratings' => [
-                    'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
+                    // 'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
                     'ratings_count' => $booking->carModel->ratings->count(),
                 ],
-                'brand_name'     => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
+                // 'brand_name'     => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
                 'car_plate_number' => optional($booking->car)->plate_number,               
                 'car_color' => optional($booking->car)->color,               
                 'user_name' => optional($booking->user)->name,
-                'user_email' => optional($booking->user)->email,
+                // 'user_email' => optional($booking->user)->email,
                 'user_phone' => optional($booking->user)->phone,
                 'driver_name' => optional($booking->driver)->name,
-                'driver_email' => optional($booking->driver)->email,
+                // 'driver_email' => optional($booking->driver)->email,
                 'driver_phone' => optional($booking->driver)->phone,
                 'location' => optional($booking->location)->location,
-                'latitude' => optional($booking->location)->latitude,
-                'longitude' => optional($booking->location)->longitude,
+                // 'latitude' => optional($booking->location)->latitude,
+                // 'longitude' => optional($booking->location)->longitude,
             ];
         });
 
@@ -226,7 +226,7 @@ public function carOnTheWay(Request $request, $id)
     public function bookingDetails($id)
     {
         $driver = Auth::guard('driver')->user();
-        $booking = $driver->bookings()->with(['user', 'location', 'carmodel.modelName.type.brand', 'car'])->find($id);
+        $booking = $driver->bookings()->with(['user', 'location:car,user', 'carmodel.modelName.type.brand', 'car'])->find($id);
 
         if (!$booking) {
             return response()->json(['message' => __('messages.booking_not_found')], 404);

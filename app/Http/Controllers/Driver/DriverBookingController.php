@@ -226,7 +226,7 @@ public function carOnTheWay(Request $request, $id)
     public function bookingDetails($id)
     {
         $driver = Auth::guard('driver')->user();
-        $booking = $driver->bookings()->with(['user', 'location:car,user', 'carmodel.modelName.type.brand', 'car'])->find($id);
+        $booking = $driver->bookings()->with(['user', 'location:car:user', 'carmodel.modelName.type.brand', 'car'])->find($id);
 
         if (!$booking) {
             return response()->json(['message' => __('messages.booking_not_found')], 404);

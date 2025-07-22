@@ -350,37 +350,63 @@ public function CanceledBooking()
         return response()->json(['message' => 'Location updated']);
     }
 
+    
+
+
     public function getBestRoute(Request $request)
-    {
-        $origin = $request->input('origin');
-        $destination = $request->input('destination');
+{
+    $origin = $request->input('origin');
+    $destination = $request->input('destination');
 
-        $apiKey = env('GOOGLE_MAPS_API_KEY');
-        $url = "https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$apiKey";
-
-        $response = Http::get($url);
-        $data = $response->json();
-
-        $route = $data['routes'][0] ?? null;
-        $legs = $route['legs'][0] ?? null;
-
-        if (!$route || !$legs) {
-            return response()->json([
-                'status' => $data['status'] ?? 'NO_ROUTE',
-                'message' => 'No valid route found',
-            ], 404);
-        }
-
+    // التحقق من صحة المدخلات
+    if (empty($origin) || empty($destination)) {
         return response()->json([
-            'status' => $data['status'],
-            'summary' => $route['summary'] ?? null,
-            'distance' => $legs['distance']['text'] ?? null,
-            'duration' => $legs['duration']['text'] ?? null,
-            'steps' => $legs['steps'] ?? [],
-            'start address' => $legs['start_address'] ?? null,
-            'end address' => $legs['end_address'] ?? null,
-            'polyline' => $route['overview_polyline']['points'] ?? null,
-        ]);
+            'status' => 'INVALID_REQUEST',
+            'message' => 'Origin and destination are required',
+        ], 400);
     }
+
+    $apiKey = env('GOOGLE_MAPS_API_KEY');
+    $url = "https://maps.googleapis.com/maps/api/directions/json?origin=" . urlencode($origin) . "&destination=" . urlencode($destination) . "&key=" . urlencode($apiKey);
+
+    // إرسال الطلب إلى الـ API
+    $response = Http::get($url);
+    if ($response->failed()) {
+        return response()->json([
+            'status' => 'ERROR',
+            'message' => 'Failed to connect to Google Maps API',
+        ], 500);
+    }
+
+    $data = $response->json();
+    if ($data['status'] !== 'OK') {
+        return response()->json([
+            'status' => $data['status'] ?? 'ERROR',
+            'message' => $data['error_message'] ?? 'No valid route found',
+        ], 400);
+    }
+
+    // التحقق من وجود المسارات
+    if (empty($data['routes']) || empty($data['routes'][0]['legs'])) {
+        return response()->json([
+            'status' => 'NO_ROUTE',
+            'message' => 'No valid route found',
+        ], 404);
+    }
+
+    $route = $data['routes'][0];
+    $legs = $route['legs'][0];
+
+    return response()->json([
+        'status' => $data['status'],
+        'summary' => $route['summary'] ?? null,
+        'distance' => $legs['distance']['text'] ?? null,
+        'duration' => $legs['duration']['text'] ?? null,
+        'steps' => $legs['steps'] ?? [],
+        'start_address' => $legs['start_address'] ?? null,
+        'end_address' => $legs['end_address'] ?? null,
+        'polyline' => $route['overview_polyline']['points'] ?? null,
+    ]);
+}
 
 }//ahmeeeeeeeed

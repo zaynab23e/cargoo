@@ -39,7 +39,7 @@ class DriverAuthController extends Controller
         $token = $driver->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'driver' => $driver,
+            'driver' => new DriverResource($driver),
             'token' => $token,
         ]);
     }

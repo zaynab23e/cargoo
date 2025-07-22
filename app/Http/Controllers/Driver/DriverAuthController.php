@@ -9,7 +9,7 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Resources\DriverResource;
+use App\Http\Resources\DriverResource;          
 
 class DriverAuthController extends Controller
 {
@@ -40,7 +40,7 @@ class DriverAuthController extends Controller
         $token = $driver->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'driver' => new DriverResource($driver),
+            'driver' => new DriversResource($driver),
             'token' => $token,
         ]);
     }

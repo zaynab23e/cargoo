@@ -17,7 +17,7 @@ class DriverController extends Controller
         $driver = Driver::with(['driverLocations', 'bookings'])->findOrFail($id);
 
         return response()->json([
-            'status' => 'success',
+            'message' => __('messages.updated_successfully'),
             'data' => [
                 'id'        => $driver->id,
                 'name'      => $driver->name,

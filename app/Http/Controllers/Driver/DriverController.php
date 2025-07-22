@@ -23,9 +23,9 @@ class DriverController extends Controller
                 'name'      => $driver->name,
                 'email'     => $driver->email,
                 'phone'     => $driver->phone,
-                'location'  => $driver->location,
-                'latitude'  => $driver->latitude,
-                'longitude' => $driver->longitude,
+                // 'location'  => $driver->location,
+                // 'latitude'  => $driver->latitude,
+                // 'longitude' => $driver->longitude,
                 'locations' => $driver->driverLocations->map(function ($location) {
                     return [
                         'id'         => $location->id,

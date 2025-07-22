@@ -39,9 +39,15 @@ class DriverAuthController extends Controller
         $token = $driver->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'driver' => $driver,
-            'token' => $token,
-        ]);
+    'driver' => [
+        'id'    => $driver->id,
+        'name'  => $driver->name,
+        'email' => $driver->email,
+        'phone' => $driver->phone,
+    ],
+        'token' => $token,
+]);
+
     }
 
     public function logout(Request $request)

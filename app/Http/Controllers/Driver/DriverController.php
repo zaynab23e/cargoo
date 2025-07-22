@@ -50,14 +50,14 @@ public function update(Request $request, $id)
 {
     $driver = Driver::findOrFail($id);
    
-    
+
     $validated = $request->validate([
         'name'      => 'nullable|string|max:255',
         'email'     => 'nullable|email|max:255',
         'phone'     => 'nullable|string|max:20',
-        'location'  => 'nullable|string|max:255',
-        'latitude'  => 'nullable|numeric', 
-        'longitude' => 'nullable|numeric',   
+        // 'location'  => 'nullable|string|max:255',
+        // 'latitude'  => 'nullable|numeric', 
+        // 'longitude' => 'nullable|numeric',   
     ], [
         'name.required'     => __('validation.required', ['attribute' => __('attributes.name')]),
         'name.string'       => __('validation.string', ['attribute' => __('attributes.name')]),

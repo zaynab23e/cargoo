@@ -28,7 +28,7 @@ class BookingResource extends JsonResource
             'location' => $this->location,
             'user' => $this->user,
             // 'driver' => $this->driver,
-            'driver' => new DriversResource($this->driver),
+            // 'driver' => new DriversResource($this->driver),
             'car' => $this->car ?? null,
         ];
     }

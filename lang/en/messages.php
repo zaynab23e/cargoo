@@ -140,5 +140,11 @@ return [
     'deleteRateSuccess' => 'Rating deleted successfully',
     'ratingNotFound' => 'Rating not found',
 
+    'name'      => 'name',
+    'email'     => 'email',
+    'phone'     => 'phone number',
+    'location'  => 'location',
+    'latitude'  => 'latitude',
+    'longitude' => 'longitude',
 
 ];

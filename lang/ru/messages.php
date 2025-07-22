@@ -144,4 +144,11 @@ return [
     'deleteRateSuccess' => 'Оценка успешно удалена',
     'ratingNotFound' => 'Оценка не найдена',
 
+        'name'      => 'имя',
+    'email'     => 'электронная почта',
+    'phone'     => 'номер телефона',
+    'location'  => 'локация',
+    'latitude'  => 'широта',
+    'longitude' => 'долгота',
+
 ];

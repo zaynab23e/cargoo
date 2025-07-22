@@ -154,4 +154,11 @@ return [
     'setRateFailed' => 'فشل في إضافة التقييم',
     'deleteRateSuccess' => 'تم حذف التقييم بنجاح',
     'ratingNotFound' => 'التقييم غير موجود',
+
+    'name' => 'الاسم',
+    'email' => 'البريد الإلكتروني',
+    'phone' => 'رقم الهاتف',
+    'location' => 'الموقع',
+    'latitude' => 'خط العرض',
+    'longitude' => 'خط الطول',
 ];

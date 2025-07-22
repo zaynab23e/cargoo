@@ -67,119 +67,6 @@ class DriverBookingController extends Controller
     }
 //_____________________________________________________________________________________________
 
-public function ConfirmedBooking()
-{
-    $driver = Auth::guard('driver')->user();
-    $bookings = $driver->bookings()->with([
-        'carModel.modelName.type.brand', 'user', 'location', 'car'
-    ])
-    ->where('status', 'confirmed')
-    ->orderBy('created_at', 'desc')
-    ->get();
-
-    if ($bookings->isEmpty()) {
-        return response()->json([
-            'message' => __('messages.no_bookings'),
-            'data' => []
-        ], 404);
-    }
-
-    $data = $bookings->map(function ($booking) {
-        return [
-            'id' => $booking->id,
-            'start_date' => $booking->start_date,
-            'end_date'   => $booking->end_date,
-            'status'   => $booking->status,
-            'payment_method'   => $booking->payment_method,
-            'final_price'   => $booking->final_price,
-            'car_model_id' => optional($booking->carModel)->id,
-            'model_name'     => optional(optional($booking->carModel)->modelName)->name,
-            'car_model_year' => optional($booking->carModel)->year,
-            'car_model_image' => asset(optional($booking->carModel)->image),
-            'Ratings' => [
-                'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
-                'ratings_count' => $booking->carModel->ratings->count(),
-            ],
-            'brand_name'     => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
-            'car_plate_number' => optional($booking->car)->plate_number,               
-            'car_color' => optional($booking->car)->color,               
-            'user_name' => optional($booking->user)->name,
-            'user_email' => optional($booking->user)->email,
-            'user_phone' => optional($booking->user)->phone,
-            'driver_name' => optional($booking->driver)->name,
-            'driver_email' => optional($booking->driver)->email,
-            'driver_phone' => optional($booking->driver)->phone,
-            'location' => optional($booking->location)->location,
-            'latitude' => optional($booking->location)->latitude,
-            'longitude' => optional($booking->location)->longitude,
-        ];
-    });
-
-    return response()->json([
-        'message' => __('messages.confirmed_bookings_retrieved'),
-        'data' => $data
-    ]);
-}
-
-//_____________________________________________________________________________________________
-
-public function CanceledBooking()
-{
-    $driver = Auth::guard('driver')->user();
-    $bookings = $driver->bookings()->with([
-        'carModel.modelName.type.brand','user','location','car'
-    ])
-    ->where('status', 'canceled')
-    ->orderBy('created_at', 'desc')
-    ->get();
-
-    if ($bookings->isEmpty()) {
-        return response()->json([
-            'message' => __('messages.no_bookings'),
-            'data' => []
-        ], 404);
-    }
-
-    $data = $bookings->map(function ($booking) {
-        return [
-            'id' => $booking->id,
-            'start_date' => $booking->start_date,
-            'end_date'   => $booking->end_date,
-            'status'   => $booking->status,
-            'payment_method'   => $booking->payment_method,
-            'final_price'   => $booking->final_price,
-            'car_model_id' => optional($booking->carModel)->id,
-            'model_name'     => optional(optional($booking->carModel)->modelName)->name,
-            'car_model_year' => optional($booking->carModel)->year,
-            'car_model_image' => asset(optional($booking->carModel)->image),
-            'Ratings' => [
-                'average_rating' => $booking->carModel->avgRating() ? number_format($booking->carModel->avgRating(), 1) : null,
-                'ratings_count' => $booking->carModel->ratings->count(),
-            ],
-            'brand_name'     => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
-            'car_plate_number' => optional($booking->car)->plate_number,               
-            'car_color' => optional($booking->car)->color,               
-            'user_name' => optional($booking->user)->name,
-            'user_email' => optional($booking->user)->email,
-            'user_phone' => optional($booking->user)->phone,
-            'driver_name' => optional($booking->driver)->name,
-            'driver_email' => optional($booking->driver)->email,
-            'driver_phone' => optional($booking->driver)->phone,
-            'location' => optional($booking->location)->location,
-            'latitude' => optional($booking->location)->latitude,
-            'longitude' => optional($booking->location)->longitude,
-        ];
-    });
-
-    return response()->json([
-        'message' => __('messages.canceled_bookings_retrieved'),
-        'data' => $data
-    ]);
-}
-
-
-
-
     public function AssignedBooking()
     {
         $driver = Auth::guard('driver')->user();
@@ -233,7 +120,7 @@ public function CanceledBooking()
             'data' => $data
         ]);
     }
-
+//_____________________________________________________________________________________________
     public function AcceptedBooking()
     {
         $driver = Auth::guard('driver')->user();
@@ -287,7 +174,7 @@ public function CanceledBooking()
             'data' => $data
         ]);
     }
-
+//________________________________________________________________________________________________
     public function changeStatus(Request $request, $id)
     {
         $driver = Auth::guard('driver')->user();
@@ -312,6 +199,7 @@ public function CanceledBooking()
 
         return response()->json(['message' => __('messages.status_updated'), 'data' => $booking], 200);
     }
+//___________________________________________________________________________________________________
     public function bookingDetails($id)
     {
         $driver = Auth::guard('driver')->user();
@@ -326,7 +214,7 @@ public function CanceledBooking()
             'data'=> new BookingResource($booking),
         ], 200);
     }
-
+//____________________________________________________________________________________________
     public function updateLocation(Request $request)
     {
         $driver = Auth::guard('driver')->user();
@@ -349,10 +237,7 @@ public function CanceledBooking()
 
         return response()->json(['message' => 'Location updated']);
     }
-
-    
-
-
+//________________________________________________________________________________________________
     public function getBestRoute(Request $request)
 {
     $origin = $request->input('origin');
@@ -409,4 +294,4 @@ public function CanceledBooking()
     ]);
 }
 
-}//ahmeeeeeeeed
+}

@@ -22,6 +22,7 @@ use App\Http\Controllers\User\LocationController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\User\FavoriteController;
+use App\Http\Controllers\Driver\DriverController;
 use App\Http\Middleware\Driver;
 
 Route::middleware('lang')->group(function () {
@@ -145,6 +146,9 @@ Route::middleware('driver')->prefix('/driver')->group(function () {
     Route::post('/update-Location', [DriverBookingController::class, 'updateLocation']);
     Route::post('/getBestRoute', [DriverBookingController::class, 'getBestRoute']);
     
+    Route::get('driver/{id}', [DriverController::class, 'show']);
+    Route::post('driver/{id}', [DriverController::class, 'update']);
+
     Route::post('/logout', [DriverAuthController::class, 'logout']);
 
 
@@ -159,20 +163,20 @@ Route::middleware('driver')->prefix('/driver')->group(function () {
     
 });
 
-///////////////////////////////Sales Routes////////////////////////////////////
-Route::prefix('/sales')->middleware('sales')->group(function () {
-    Route::get('/booking/confirmed', [SalesBookingController::class, 'ConfirmedBooking']);
-    Route::get('/booking/completed', [SalesBookingController::class, 'CompletedBooking']);
-    Route::get('/booking/assigned', [SalesBookingController::class, 'AssignedBooking']);
-    Route::get('/booking/canceled', [SalesBookingController::class, 'CanceledBooking']);
+// ///////////////////////////////Sales Routes////////////////////////////////////
+// Route::prefix('/sales')->middleware('sales')->group(function () {
+//     Route::get('/booking/confirmed', [SalesBookingController::class, 'ConfirmedBooking']);
+//     Route::get('/booking/completed', [SalesBookingController::class, 'CompletedBooking']);
+//     Route::get('/booking/assigned', [SalesBookingController::class, 'AssignedBooking']);
+//     Route::get('/booking/canceled', [SalesBookingController::class, 'CanceledBooking']);
 
-    Route::get('/booking/{bookingId}/cars', [SalesBookingController::class, 'getCars']);
-    Route::post('/booking/{bookingId}/assign-car/{carId}', [SalesBookingController::class, 'assignCar']);
+//     Route::get('/booking/{bookingId}/cars', [SalesBookingController::class, 'getCars']);
+//     Route::post('/booking/{bookingId}/assign-car/{carId}', [SalesBookingController::class, 'assignCar']);
 
-    // ⬇ روتات SalesController
-    Route::post('/booking/{id}/mark-assigned', [SalesController::class, 'markAsAssigned']);
-    Route::post('/booking/{id}/change-status', [SalesController::class, 'changeStatus']);
-    Route::get('/booking/{id}', [SalesController::class, 'bookingDetails']);
-});
+//     // ⬇ روتات SalesController
+//     Route::post('/booking/{id}/mark-assigned', [SalesController::class, 'markAsAssigned']);
+//     Route::post('/booking/{id}/change-status', [SalesController::class, 'changeStatus']);
+//     Route::get('/booking/{id}', [SalesController::class, 'bookingDetails']);
+// });
 
 });

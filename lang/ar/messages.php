@@ -161,4 +161,6 @@ return [
     'location' => 'الموقع',
     'latitude' => 'خط العرض',
     'longitude' => 'خط الطول',
+
+    'updated_successfully'=> 'تم التحديث بنجاح',
 ];

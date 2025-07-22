@@ -150,5 +150,6 @@ return [
     'location'  => 'локация',
     'latitude'  => 'широта',
     'longitude' => 'долгота',
+    'updated_successfully' => 'Успешно обновлено',
 
 ];

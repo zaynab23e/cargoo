@@ -147,4 +147,5 @@ return [
     'latitude'  => 'latitude',
     'longitude' => 'longitude',
 
+    'updated_successfully' => 'Updated successfully',
 ];

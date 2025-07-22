@@ -30,9 +30,9 @@ class DriverController extends Controller
                     return [
                         'id'         => $location->id,
                         'location'   => $location->location,
-                        'latitude'   => $location->latitude,
-                        'longitude'  => $location->longitude,
-                        'created_at' => $location->created_at->toIso8601String(),
+                    //     'latitude'   => $location->latitude,
+                    //     'longitude'  => $location->longitude,
+                    //     'created_at' => $location->created_at->toIso8601String(),
                     ];
                 }),
                 'bookings' => $driver->bookings->map(function ($booking) {
@@ -55,7 +55,7 @@ public function update(Request $request, $id)
         'name'      => 'nullable|string|max:255',
         'email'     => 'nullable|email|max:255',
         'phone'     => 'nullable|string|max:20',
-        // 'location'  => 'nullable|string|max:255',
+        'location'  => 'nullable|string|max:255',
         // 'latitude'  => 'nullable|numeric', 
         // 'longitude' => 'nullable|numeric',   
     ], [
@@ -74,8 +74,8 @@ public function update(Request $request, $id)
         'location.string'   => __('validation.string', ['attribute' => __('attributes.location')]),
         'location.max'      => __('validation.max.string', ['attribute' => __('attributes.location'), 'max' => 255]),
 
-        'latitude.numeric'  => __('validation.numeric', ['attribute' => __('attributes.latitude')]),
-        'longitude.numeric' => __('validation.numeric', ['attribute' => __('attributes.longitude')]),
+        // 'latitude.numeric'  => __('validation.numeric', ['attribute' => __('attributes.latitude')]),
+        // 'longitude.numeric' => __('validation.numeric', ['attribute' => __('attributes.longitude')]),
     ]);
 
     // تحديث البيانات

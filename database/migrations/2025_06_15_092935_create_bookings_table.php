@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->decimal('final_price', 10, 2);
+            $table->decimal('final_price', 10, places: 2);
             $table->enum('status', ['pending', 'confirmed', 'assigned', 'canceled', 'completed'])->default('pending');
             $table->timestamps();
         });

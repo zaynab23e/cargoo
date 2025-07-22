@@ -152,7 +152,8 @@ Route::middleware('driver')->prefix('/driver')->group(function () {
     Route::post('/logout', [DriverAuthController::class, 'logout']);
 
 
-  
+        Route::post('/booking-pending/{id}', [DriverBookingController::class, 'carOnTheWay']);
+
     Route::get('/Confirmed-Booking', [DriverBookingController::class, 'ConfirmedBooking']); 
 
     Route::get('/Canceled-Booking', [DriverBookingController::class, 'CanceledBooking']);

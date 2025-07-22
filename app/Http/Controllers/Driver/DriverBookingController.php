@@ -66,6 +66,28 @@ class DriverBookingController extends Controller
         ]);
     }
 //_____________________________________________________________________________________________
+public function carOnTheWay(Request $request, $id)
+{
+    $driver = Auth::guard('driver')->user();
+
+    $booking = $driver->bookings()->find($id);
+
+    if (!$booking) {
+        return response()->json([
+            'message' => __('messages.booking_not_found')
+        ], 404);
+    }
+
+    $booking->status = 'pending';
+    $booking->save();
+
+    return response()->json([
+        'message' => __('messages.car_on_the_way'),
+        'data' => $booking
+    ], 200);
+}
+
+//_____________________________________________________________________________________________
 
     public function AssignedBooking()
     {

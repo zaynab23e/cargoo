@@ -20,15 +20,14 @@ class DriverAuthController extends Controller
         'email' => 'required|email|unique:drivers,email',
         'phone' => 'required|string|max:15|unique:drivers,phone',
         'password' => 'required|string|confirmed|min:8',
-
         // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $driver = Driver::create($validatedData);
         
-        if (Driver::where('email', $request->email)->exists()) {
-            return response()->json(['message' => 'البريد الإلكتروني موجود بالفعل'], 409);
-        }
+        // if (Driver::where('email', $request->email)->exists()) {
+        //     return response()->json(['message' => 'البريد الإلكتروني موجود بالفعل'], 409);
+        // }
         $token = $driver->createToken('api-token')->plainTextToken;
         return response()->json([
             'message' => __('messages.register_success'),

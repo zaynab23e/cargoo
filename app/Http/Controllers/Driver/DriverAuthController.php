@@ -14,7 +14,7 @@ class DriverAuthController extends Controller
 {
     public function register(request $request)
     {
-        $validatedData = $request->validat([
+        $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'last_name' => 'nullable|string|max:255',
         'email' => 'required|email|unique:drivers,email',

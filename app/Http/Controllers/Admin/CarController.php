@@ -67,6 +67,8 @@ class CarController extends Controller
             'plate_number' => $request->plate_number,
             'status' => $request->status,
             'color' => $request->color,
+            'Description' => $request->Description, // إضافة حقل الوصف
+            'Capacity' => $request->Capacity, // إضافة حقل السعة
             'image' => $imagePath ? 'cars/' . $imagePath : null,
         ]);
 
@@ -138,6 +140,8 @@ class CarController extends Controller
             'plate_number' => 'sometimes|string|unique:cars,plate_number,' . $car->id,
             'status' => 'sometimes|string',
             'color' => 'nullable|string',
+            'Description' => 'nullable|string',
+            'Capacity' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -152,6 +156,8 @@ class CarController extends Controller
                 'plate_number' => 'required|string|unique:cars',
                 'status' => 'nullable|string',
                 'color' => 'nullable|string',
+                'Description' => 'nullable|string',
+                'Capacity' => 'nullable|string',
                 'image' => 'nullable|image|max:2048',
                 'images' => 'nullable|array',
                 'images.*' => 'image|max:2048',
@@ -169,6 +175,8 @@ class CarController extends Controller
                 'plate_number' => $request->plate_number,
                 'status' => $request->status,
                 'color' => $request->color,
+                'Description' => $request->Description, // إضافة حقل الوصف
+                'Capacity' => $request->Capacity, // إضافة حقل السعة
                 'image' => $imagePath ? 'cars/' . $imagePath : null,
             ]);
 

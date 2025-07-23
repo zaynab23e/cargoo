@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
-  protected $fillable = ['carmodel_id','plate_number','status','image','color'];
+  protected $fillable = ['carmodel_id','plate_number','status','image','color' , 'Description', 'Capacity'];
   protected $hidden = ['created_at', 'updated_at'];
 
   

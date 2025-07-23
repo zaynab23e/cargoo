@@ -20,6 +20,7 @@ class DriverAuthController extends Controller
         'email' => 'required|email|unique:drivers,email',
         'phone' => 'required|string|max:15|unique:drivers,phone',
         'password' => 'required|string|confirmed|min:8',
+
         // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

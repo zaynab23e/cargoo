@@ -18,8 +18,8 @@ return new class extends Migration
             $table->enum('status', ["available", "rented", "maintenance"])->default('available');
             $table->string('image');
             $table->string('color');
-            $table->string('Description	')->nullable(); // Added Description column
-            $table->string('Capacity')->nullable(); // Added Description column
+            $table->string('description	')->nullable(); // Added Description column
+            $table->string('capacity')->nullable(); // Added Description column
             $table->foreign('carmodel_id')->references('id')->on('carmodels')->onDelete('cascade');
             $table->timestamps();
         });

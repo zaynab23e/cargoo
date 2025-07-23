@@ -40,7 +40,7 @@ class DriverAuthController extends Controller
 
     public function login(login $request)
     {
-        $validatedData = $request->validat();
+        $validatedData = $request->validated();
 
         $driver = Driver::where('email', $validatedData['email'])->first();
 

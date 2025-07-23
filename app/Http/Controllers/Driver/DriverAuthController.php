@@ -12,23 +12,32 @@ use Illuminate\Support\Facades\Hash;
 
 class DriverAuthController extends Controller
 {
-    public function register(store $request)
-    {
-        $validatedData = $request->validated();
+//     public function register(request $request)
+//     {
+//         $validatedData = $request->validated();
 
-        $driver = Driver::create($validatedData);
-        $token = $driver->createToken('api-token')->plainTextToken;
+//         $driver = Driver::create($validatedData);
+//         $token = $driver->createToken('api-token')->plainTextToken;
 
-        return response()->json([
-            'message' => __('messages.register_success'),
-            'driver' => $driver,
-            'token' => $token,
-        ]);
-    }
+//         return response()->json([
+//             'message' => __('messages.register_success'),
+//             'driver' => $driver,
+//             'token' => $token,
+//         ]);
+//     }
+
+
 
     public function login(login $request)
     {
-        $validatedData = $request->validated();
+        $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'last_name' => 'nullable|string|max:255',
+        'email' => 'required|email|unique:drivers,email',
+        'phone' => 'required|string|max:15|unique:drivers,phone',
+        'password' => 'required|string|confirmed|min:8',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
         $driver = Driver::where('email', $validatedData['email'])->first();
 

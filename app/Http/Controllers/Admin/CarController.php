@@ -47,7 +47,7 @@ class CarController extends Controller
             'plate_number' => 'required|string|unique:cars',
             'status' => 'nullable|string',
             'color' => 'nullable|string',
-            'Description' => 'nullable|string',
+            'Description' => 'nullable|string', 
             'Capacity' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'images' => 'nullable|array',

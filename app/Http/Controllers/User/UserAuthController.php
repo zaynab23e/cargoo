@@ -27,7 +27,7 @@ class UserAuthController extends Controller
         ]);
     }
 
-    public function login(Login $request)
+    public function login($request)
     {
         $validatedData = $request->validated();
 

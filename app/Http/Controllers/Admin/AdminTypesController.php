@@ -72,22 +72,46 @@ class AdminTypesController extends Controller
         return $this->success($type, trans('messages.type_updated_successfully'));
     }
 
+    // public function destroy(Brand $brand, $typeId)
+    // {
+    //     $type = Type::findOrFail($typeId);
+
+    //     $brand->types()->detach($typeId);
+
+    //     if (!$type) {
+    //         return response()->json([
+    //             'status' => trans('messages.error_occurred'),
+    //             'message' => trans('messages.type_not_found'),
+    //             'data' => ''
+    //         ], 500);
+    //     }
+
+    //     return $this->success('', trans('messages.type_deleted_successfully'));
+    // }
+
+
     public function destroy(Brand $brand, $typeId)
-    {
-        $type = Type::findOrFail($typeId);
+{
+    // نجيب التايب المرتبط بالبراند فقط
+    $type = $brand->types()->where('id', $typeId)->first();
 
-        $brand->types()->detach($typeId);
-
-        if (!$type) {
-            return response()->json([
-                'status' => trans('messages.error_occurred'),
-                'message' => trans('messages.type_not_found'),
-                'data' => ''
-            ], 500);
-        }
-
-        return $this->success('', trans('messages.type_deleted_successfully'));
+    if (!$type) {
+        return response()->json([
+            'status' => trans('messages.error_occurred'),
+            'message' => trans('messages.type_not_found'),
+            'data' => ''
+        ], 404);
     }
+
+    // نحذف التايب
+    $type->delete();
+
+    return response()->json([
+        'status' => trans('messages.deleted_successfully'),
+        'message' => trans('messages.type_deleted'),
+        'data' => ''
+    ], 200);
+}
 
     public function show(Brand $brand, $id)
     {

@@ -269,31 +269,31 @@ public function CompletedBooking()
     
 
     //_______________________________________________________________________________________________
-    // private function formatBookingData($booking)
-    // {
-    //     return [
-    //         'id' => $booking->id,
-    //         'start_date' => $booking->start_date,
-    //         'end_date' => $booking->end_date,
-    //         'status' => $booking->status,
-    //         'payment_method' => $booking->payment_method,
-    //         'final_price' => $booking->final_price,
-    //         'car_model_id' => optional($booking->carModel)->id,
-    //         'car_model_year' => optional($booking->carModel)->year,
-    //         'car_model_image' => asset(optional($booking->carModel)->image),
-    //         'model_name' => optional(optional($booking->carModel)->modelName)->name,
-    //         'Ratings' => [
-    //             'average_rating' => optional($booking->carModel)->avgRating()
-    //             ? number_format($booking->carModel->avgRating(), 1)
-    //             : null,
-    //             'ratings_count' => optional($booking->carModel)->ratings->count() ?? 0,
-    //         ],
-    //         'brand_name' => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
-    //         'user_name' => optional($booking->user)->name,
-    //         'user_email' => optional($booking->user)->email,
-    //         'location' => optional($booking->location)->name,
-    //     ];
-    // }
+    private function formatBookingData($booking)
+    {
+        return [
+            'id' => $booking->id,
+            'start_date' => $booking->start_date,
+            'end_date' => $booking->end_date,
+            'status' => $booking->status,
+            'payment_method' => $booking->payment_method,
+            'final_price' => $booking->final_price,
+            'car_model_id' => optional($booking->carModel)->id,
+            'car_model_year' => optional($booking->carModel)->year,
+            'car_model_image' => asset(optional($booking->carModel)->image),
+            'model_name' => optional(optional($booking->carModel)->modelName)->name,
+            'Ratings' => [
+                'average_rating' => optional($booking->carModel)->avgRating()
+                ? number_format($booking->carModel->avgRating(), 1)
+                : null,
+                'ratings_count' => optional($booking->carModel)->ratings->count() ?? 0,
+            ],
+            'brand_name' => optional(optional(optional($booking->carModel)->modelName)->type->brand)->name,
+            'user_name' => optional($booking->user)->name,
+            'user_email' => optional($booking->user)->email,
+            'location' => optional($booking->location)->name,
+        ];
+    }
     //_______________________________________________________________________________________________
-    
+
 }

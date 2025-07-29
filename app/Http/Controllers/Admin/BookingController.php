@@ -295,5 +295,30 @@ public function CompletedBooking()
         ];
     }
     //_______________________________________________________________________________________________
+public function NewBookings()
+{
+    $bookings = Booking::with([
+        'carModel.modelName.type.brand', 'carModel.ratings', 'user', 'location'
+    ])
+    ->whereIn('status', ['initiated', 'awaiting_payment', 'payment_pending'])
+    ->orderBy('created_at', 'desc')
+    ->get();
 
+    if ($bookings->isEmpty()) {
+        return response()->json([
+            'message' => __('messages.no_bookings'),
+            'data' => []
+        ], 404);
+    }
+
+    $data = $bookings->map(function ($booking) {
+        return $this->formatBookingData($booking);
+    });
+
+    return response()->json([
+        'message' => __('messages.new_bookings_retrieved'),
+        'data' => $data
+    ]);
+}
+    //_______________________________________________________________________________________________
 }

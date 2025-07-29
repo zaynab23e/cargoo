@@ -20,4 +20,25 @@ class StatisticsController extends Controller
             'data' => $stats
         ]);
     }
+
+
+        public function statisticsHome()
+    {
+        $bookings = Booking::all();
+
+        $totalRented = $bookings->count();
+
+        $totalRentedDays = $bookings->sum(function ($booking) {
+            return now()->parse($booking->start_date)->diffInDays(now()->parse($booking->end_date));
+        });
+
+        $totalRevenue = $bookings->sum('final_price');
+
+        return response()->json([
+            'total_rented' => $totalRented,
+            'total_rented_days' => $totalRentedDays,
+            'total_revenue' => $totalRevenue,
+        ]);
+    }
+
 }

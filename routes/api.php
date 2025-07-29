@@ -88,7 +88,11 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::post('/booking/{id}/status', [BookingController::class, 'changeStatus']);
 //Statistics
     Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);
+    Route::get('dashboard/statistics', [StatisticsController::class, 'statisticsHome']);
 
+    //Admin Profile
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/profile', [AuthController::class, 'updateProfile']);
 
 });
 ///////////////////////////////User Routes////////////////////////////////////

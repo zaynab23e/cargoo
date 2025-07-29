@@ -23,6 +23,7 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\Driver\DriverController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Middleware\Driver;
 
 Route::middleware('lang')->group(function () {
@@ -85,6 +86,9 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::get('/Booking/{id}/Cars', [BookingController::class, 'getCars']);
     Route::post('/Booking/{bookingId}/Assign-Car/', [BookingController::class, 'assignCar']);
     Route::post('/booking/{id}/status', [BookingController::class, 'changeStatus']);
+//Statistics
+    Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);
+
 
 });
 ///////////////////////////////User Routes////////////////////////////////////

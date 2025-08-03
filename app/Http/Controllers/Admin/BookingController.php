@@ -287,11 +287,11 @@ public function CompletedBooking()
 
     $booking->status = $request->status;
 
-    if ($booking->car) {
-        // التأكد إن status في جدول cars يقبل 'available'
-        $booking->car->status = 'available';
-        $booking->car->save();
-    }
+    // if ($booking->car) {
+    //     // التأكد إن status في جدول cars يقبل 'available'
+    //     $booking->car->status = 'available';
+    //     $booking->car->save();
+    // }
 
     $booking->save();
 

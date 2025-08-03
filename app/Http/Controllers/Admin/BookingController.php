@@ -238,69 +238,53 @@ public function CompletedBooking()
     }
     
     //_______________________________________________________________________________________________
-    // public function changeStatus(Request $request, $id)
-    // {
-    //     $booking = Booking::with([
-    //         'carModel.modelName.type.brand', 'car', 'user', 'location', 'driver'
-    //         ])->find($id);
-            
-    //         if (!$booking) {
-    //             return response()->json(['message' => __('messages.booking_not_found')], 404);
-    //         }
-
-    //     $request->validate([
-    //         'status' => 'required|in:canceled,completed',
-    //     ]);
-        
-    //     $booking->status = $request->status;
-        
-    //     if ($booking->car) {
-    //         $booking->car->status = 'available';
-    //         $booking->car->save();
-    //     }
-        
-    //     $booking->save();
-        
-    //     return response()->json([
-    //         'message' => __('messages.status_updated'),
-    //         'data' => $booking
-    //     ], 200);
-    // }
-    
     public function changeStatus(Request $request, $id)
-{
-    $booking = Booking::with([
-        'carModel.modelName.type.brand',
-        'car',
-        'user',
-        'location',
-        'driver'
-    ])->find($id);
+    {
+        $booking = Booking::with([
+            'carModel.modelName.type.brand', 'car', 'user', 'location', 'driver'
+            ])->find($id);
+            
+            if (!$booking) {
+                return response()->json(['message' => __('messages.booking_not_found')], 404);
+            }
 
-    if (!$booking) {
-        return response()->json(['message' => __('messages.booking_not_found')], 404);
+        $request->validate([
+            'status' => 'required|in:canceled,completed,',
+        ]);
+        
+        $booking->status = $request->status;
+        
+        if ($booking->car) {
+            $booking->car->status = 'available';
+            $booking->car->save();
+        }
+        
+        $booking->save();
+        
+        return response()->json([
+            'message' => __('messages.status_updated'),
+            'data' => $booking
+        ], 200);
     }
 
+//________________________________________________________________________________________________
+public function changeStat( Request $request, $id){
+
+    $car= Car::find($id);
+    if (!$car) {
+        return response()->json(['message' => __('messages.car_not_found')], 404);
+    }
     $request->validate([
-        'status' => 'required|in:canceled,completed,available',
+        'status' => 'required|in:available,rented,maintenance',
     ]);
-
-    $booking->status = $request->status;
-
-    // if ($booking->car) {
-    //     // التأكد إن status في جدول cars يقبل 'available'
-    //     $booking->car->status = 'available';
-    //     $booking->car->save();
-    // }
-
-    $booking->save();
-
+    $car->status = $request->status;
+    $car->save();
     return response()->json([
-        'message' => __('messages.status_updated'),
-        'data' => $booking
+        'message' => __('messages.car_status_updated'),
+        'data' => $car
     ], 200);
-}
 
+}
 
     //_______________________________________________________________________________________________
     private function formatBookingData($booking)

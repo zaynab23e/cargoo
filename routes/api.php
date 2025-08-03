@@ -87,7 +87,9 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::post('/Booking/{bookingId}/Assign-Car/', [BookingController::class, 'assignCar']);
     Route::post('/booking/{id}/status', [BookingController::class, 'changeStatus']);
     Route::get('/new-bookings', [BookingController::class, 'NewBookings']);
-
+    
+    //carStatus
+    Route::post('/booking/{id}/changeStat', [BookingController::class, 'changeStat']);
     
 //Statistics
     Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);

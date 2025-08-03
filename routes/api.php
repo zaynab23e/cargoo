@@ -90,7 +90,7 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     //carStatus
     Route::post('/car/{id}/changeStat', [BookingController::class, 'changeStat']);
     //gitAssignCar
-    Route::get('/AssignCar/', [BookingController::class, 'gitAssignCar']);
+    Route::get('/AssignCar', [BookingController::class, 'gitAssignCar']);
    //Statistics
     Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);
     Route::get('dashboard/statistics', [StatisticsController::class, 'statisticsHome']);

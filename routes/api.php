@@ -89,7 +89,7 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::get('/new-bookings', [BookingController::class, 'NewBookings']);
     
     //carStatus
-    Route::post('/booking/{id}/changeStat', [BookingController::class, 'changeStat']);
+    Route::post('/car/{id}/changeStat', [BookingController::class, 'changeStat']);
     
 //Statistics
     Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);

@@ -72,7 +72,6 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::delete('/Brands/{brandId}/Types/{typeId}/Model-Names/{modelNameId}/Models/{modelId}/Cars/{car}', [CarController::class, 'destroy']);
     
     //Booking
-    
     Route::get('/Confirmed-Booking', [BookingController::class, 'ConfirmedBooking']);
     Route::get('/Driver-Assigned-Booking', [BookingController::class, 'DriverAssignedBooking']);
     Route::get('/Completed-Booking', [BookingController::class, 'CompletedBooking']);
@@ -90,11 +89,11 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     
     //carStatus
     Route::post('/car/{id}/changeStat', [BookingController::class, 'changeStat']);
-    
-//Statistics
+    //gitAssignCar
+    Route::get('/AssignCar/', [BookingController::class, 'gitAssignCar']);
+   //Statistics
     Route::get('/statistics', [StatisticsController::class, 'bookingStatusStats']);
     Route::get('dashboard/statistics', [StatisticsController::class, 'statisticsHome']);
-
     //Admin Profile
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/profile', [AuthController::class, 'updateProfile']);

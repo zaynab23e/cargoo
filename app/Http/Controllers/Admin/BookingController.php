@@ -236,7 +236,32 @@ public function CompletedBooking()
             'data' => $booking
         ], 200);
     }
-    
+//_______________________________________________________________________________________________
+public function gitAssignCar(){
+    $bookings = Booking::with([
+        'carModel.modelName.type.brand', 'carModel.ratings', 'user', 'location'
+    ])
+    ->where('status', 'car_assigned')
+    ->orderBy('created_at', 'desc')
+    ->get();
+
+    if ($bookings->isEmpty()) {
+        return response()->json([
+            'message' => __('messages.no_bookings'),
+            'data' => []
+        ], 404);
+    }
+
+    $data = $bookings->map(function ($booking) {
+        return $this->formatBookingData($booking);
+    });
+
+    return response()->json([
+        'message' => __('messages.assigned_bookings_retrieved'),
+        'data' => $data
+    ]);
+    }
+
     //_______________________________________________________________________________________________
     public function changeStatus(Request $request, $id)
     {

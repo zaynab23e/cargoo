@@ -24,7 +24,7 @@ return [
     'profile_retrieved' => 'تم استرجاع الملف الشخصي بنجاح',
     'no_bookings' => 'لا توجد حجوزات للمستخدم',
     'bookings_retrieved' => 'تم استرجاع سجل الحجوزات بنجاح',
-    'booking_not_found' => 'الحجز غير موجود',
+    // 'booking_not_found' => 'الحجز غير موجود',
     'booking_status_not_confirmed' => 'لا يمكن تعيين السيارة إلا في حالة الحجز المؤكد',
     'confirmed_bookings_retrieved' => 'تم استرجاع الحجوزات المؤكدة بنجاح',
     'completed_bookings_retrieved' => 'تم استرجاع الحجوزات المكتملة بنجاح',

@@ -249,7 +249,7 @@ public function CompletedBooking()
             }
 
         $request->validate([
-            'status' => 'required|in:canceled,completed',
+            'status' => 'required|in:canceled,completed,available',
         ]);
         
         $booking->status = $request->status;

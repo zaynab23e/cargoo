@@ -208,7 +208,7 @@ class CarController extends Controller
             return response()->json(['message' => __('messages.car_not_found')], 404);
         }
 
-
+        // حذف الصور المرتبطة بالسيارة
         foreach ($car->images as $image) {
             if (file_exists(public_path($image->path))) {
                 unlink(public_path($image->path));

@@ -199,6 +199,29 @@ class CarController extends Controller
             ], 201);
         }
     }
+    //________________________________________________________________________________________________________
+    public function destroy(string $brandId, string $typeId, string $modelNameId
+, string $modelId, string $id)
+    {
+        $car = Car::find($id);
+        if (!$car) {
+            return response()->json(['message' => __('messages.car_not_found')], 404);
+        }
+
+        // حذف الصور المرتبطة بالسيارة
+        foreach ($car->images as $image) {
+            if (file_exists(public_path($image->path))) {
+                unlink(public_path($image->path));
+            }
+            $image->delete();
+        }
+
+        // حذف السيارة
+        $car->delete();
+
+        return response()->json(['message' => __('messages.car_deleted')], 200);
+    }
+    //________________________________________________________________________________________________________
 }
 
 

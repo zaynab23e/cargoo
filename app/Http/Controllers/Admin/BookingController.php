@@ -122,7 +122,33 @@ public function CompletedBooking()
                     'data' => $data
                 ]);
             }
-            
+//_______________________________________________________________________________________________
+public function allCanceledBooking(){
+    $bookings = Booking::with([
+        'carModel.modelName.type.brand', 'carModel.ratings', 'user', 'location'
+    ])
+    ->where('status', 'canceled')
+    ->orderBy('created_at', 'desc')
+    ->get();
+
+    if ($bookings->isEmpty()) {
+        return response()->json([
+            'message' => __('messages.no_bookings'),
+            'data' => []
+        ], 404);
+    }
+
+    $data = $bookings->map(function ($booking) {
+        return $this->formatBookingData($booking);
+    });
+
+    return response()->json([
+        'message' => __('messages.canceled_bookings_retrieved'),
+        'data' => $data
+    ]);
+
+}
+//
             public function bookingDetails($id)
             {
                 $booking = Booking::with([

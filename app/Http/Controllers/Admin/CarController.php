@@ -124,81 +124,145 @@ class CarController extends Controller
         return response()->json($cars);
     }
     // __________________________________________________________________________________________
-    public function update(Request $request, string $brandId, string $typeId, string $modelNameId, string $modelId, string $id)
-    {
-        $model = CarModel::find($modelId);
-        $car = Car::with(['images', 'carModel.modelName.type.brand'])->find($id);
-        if (!$car) {
-            return response()->json(['message' => __('messages.car_not_found')], 404);
-        }    
+    // public function update(Request $request, string $brandId, string $typeId, string $modelNameId, string $modelId, string $id)
+    // {
+    //     $model = CarModel::find($modelId);
+    //     $car = Car::with(['images', 'carModel.modelName.type.brand'])->find($id);
+    //     if (!$car) {
+    //         return response()->json(['message' => __('messages.car_not_found')], 404);
+    //     }    
    
-        if ($car->carmodel_id != $modelId) {
-            return response()->json(['message' => __('messages.car_not_belong_to_model')], 404);
-        }
+    //     if ($car->carmodel_id != $modelId) {
+    //         return response()->json(['message' => __('messages.car_not_belong_to_model')], 404);
+    //     }
 
-        $request->validate([
-            'plate_number' => 'sometimes|string|unique:cars,plate_number,' . $car->id,
-            'status' => 'sometimes|string',
-            'color' => 'nullable|string',
-            'Description' => 'nullable|string',
-            'Capacity' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-        ]);
+    //     $request->validate([
+    //         'plate_number' => 'sometimes|string|unique:cars,plate_number,' . $car->id,
+    //         'status' => 'sometimes|string',
+    //         'color' => 'nullable|string',
+    //         'Description' => 'nullable|string',
+    //         'Capacity' => 'nullable|string',
+    //         'image' => 'nullable|image|max:2048',
+    //     ]);
 
         
-        if ($request->hasFile('image')) {
-            // حذف الصورة القديمة لو موجودة
-            if ($car->image && file_exists(public_path($car->image))) {
-                unlink(public_path($car->image));
-            }
+    //     if ($request->hasFile('image')) {
+    //         // حذف الصورة القديمة لو موجودة
+    //         if ($car->image && file_exists(public_path($car->image))) {
+    //             unlink(public_path($car->image));
+    //         }
 
-            $request->validate([
-                'plate_number' => 'required|string|unique:cars',
-                'status' => 'nullable|string',
-                'color' => 'nullable|string',
-                'Description' => 'nullable|string',
-                'Capacity' => 'nullable|string',
-                'image' => 'nullable|image|max:2048',
-                'images' => 'nullable|array',
-                'images.*' => 'image|max:2048',
+    //         $request->validate([
+    //             'plate_number' => 'required|string|unique:cars',
+    //             'status' => 'nullable|string',
+    //             'color' => 'nullable|string',
+    //             'Description' => 'nullable|string',
+    //             'Capacity' => 'nullable|string',
+    //             'image' => 'nullable|image|max:2048',
+    //             'images' => 'nullable|array',
+    //             'images.*' => 'image|max:2048',
+    //         ]);
+
+    //         $imagePath = null;
+    //         if ($request->hasFile('image')) {
+    //             $file = $request->file('image');
+    //             $imagePath = time() . '.' . $file->getClientOriginalExtension();
+    //             $file->move(public_path('cars'), $imagePath);
+    //         }
+
+    //         $car = Car::create([
+    //             'carmodel_id' => $modelId,
+    //             'plate_number' => $request->plate_number,
+    //             'status' => $request->status,
+    //             'color' => $request->color,
+    //             'Description' => $request->Description, // إضافة حقل الوصف
+    //             'Capacity' => $request->Capacity, // إضافة حقل السعة
+    //             'image' => $imagePath ? 'cars/' . $imagePath : null,
+    //         ]);
+
+    //         $model->count = Car::where('carmodel_id', $modelId)->count();
+    //         $model->save();
+
+    //         if ($request->hasFile('images')) {
+    //             foreach ($request->file('images') as $file) {
+    //                 $path = $file->store('cars', 'public');
+    //                 Image::create([
+    //                     'car_id' => $car->id,
+    //                     'path' => $path,
+    //                 ]);
+    //             }
+    //         }
+
+    //         return response()->json([
+    //             'message' => __('messages.car_updated'),
+    //             'data' => $car->load('images'),
+    //         ], 201);
+    //     }
+    // }
+
+    public function update(Request $request, string $brandId, string $typeId, string $modelNameId, string $modelId, string $id)
+{
+    $model = CarModel::find($modelId);
+    $car = Car::with(['images', 'carModel.modelName.type.brand'])->find($id);
+
+    if (!$car) {
+        return response()->json(['message' => __('messages.car_not_found')], 404);
+    }
+
+    if ($car->carmodel_id != $modelId) {
+        return response()->json(['message' => __('messages.car_not_belong_to_model')], 404);
+    }
+
+    $request->validate([
+        'plate_number' => 'sometimes|string|unique:cars,plate_number,' . $car->id,
+        'status' => 'sometimes|string',
+        'color' => 'nullable|string',
+        'Description' => 'nullable|string',
+        'Capacity' => 'nullable|string',
+        'image' => 'nullable|image|max:2048',
+        'images' => 'nullable|array',
+        'images.*' => 'image|max:2048',
+    ]);
+
+    if ($request->hasFile('image')) {
+        if ($car->image && file_exists(public_path($car->image))) {
+            unlink(public_path($car->image));
+        }
+
+        $file = $request->file('image');
+        $imagePath = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('cars'), $imagePath);
+        $car->image = 'cars/' . $imagePath;
+    }
+
+    $car->update([
+        'plate_number' => $request->plate_number ?? $car->plate_number,
+        'status' => $request->status ?? $car->status,
+        'color' => $request->color ?? $car->color,
+        'Description' => $request->Description ?? $car->Description,
+        'Capacity' => $request->Capacity ?? $car->Capacity,
+        // 'image' محدثة بالفعل فوق لو موجودة
+    ]);
+
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $file) {
+            $path = $file->store('cars', 'public');
+            Image::create([
+                'car_id' => $car->id,
+                'path' => $path,
             ]);
-
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $imagePath = time() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('cars'), $imagePath);
-            }
-
-            $car = Car::create([
-                'carmodel_id' => $modelId,
-                'plate_number' => $request->plate_number,
-                'status' => $request->status,
-                'color' => $request->color,
-                'Description' => $request->Description, // إضافة حقل الوصف
-                'Capacity' => $request->Capacity, // إضافة حقل السعة
-                'image' => $imagePath ? 'cars/' . $imagePath : null,
-            ]);
-
-            $model->count = Car::where('carmodel_id', $modelId)->count();
-            $model->save();
-
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $file) {
-                    $path = $file->store('cars', 'public');
-                    Image::create([
-                        'car_id' => $car->id,
-                        'path' => $path,
-                    ]);
-                }
-            }
-
-            return response()->json([
-                'message' => __('messages.car_updated'),
-                'data' => $car->load('images'),
-            ], 201);
         }
     }
+
+    $model->count = Car::where('carmodel_id', $modelId)->count();
+    $model->save();
+
+    return response()->json([
+        'message' => __('messages.car_updated'),
+        'data' => $car->load('images'),
+    ], 200);
+}
+
     //________________________________________________________________________________________________________
     public function destroy(string $brandId, string $typeId, string $modelNameId
 , string $modelId, string $id)

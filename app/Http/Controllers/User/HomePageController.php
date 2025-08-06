@@ -16,6 +16,7 @@ class HomePageController extends Controller
     public function index(Request $request)
     {
         $query = CarModel::with('modelName.type.brand')
+            ->whereHas('cars') 
             ->select('id', 'year', 'price', 'engine_type', 'transmission_type', 'seat_type', 'seats_count', 'acceleration', 'image', 'model_name_id');
 
         if ($request->filled('brand')) {

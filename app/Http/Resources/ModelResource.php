@@ -31,10 +31,14 @@ class ModelResource extends JsonResource
 
             ],
             'relationship' => array_filter([
-                'Model' => [
-    'model_id' => optional($this->modelName->model)->id,
-    'model_name' => optional($this->modelName->model)->name,
+'Model' => $this->modelName && $this->modelName->model ? [
+    'model_id' => (string) $this->modelName->model->id,
+    'model_name' => $this->modelName->model->name,
+] : [
+    'model_id' => null,
+    'model_name' => null,
 ],
+
                 'Model Names' => [
                     'model_name_id' => (string)$this->modelName->id,
                     'model_name' => $this->modelName->name,

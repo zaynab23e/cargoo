@@ -31,7 +31,17 @@ class ModelResource extends JsonResource
 
             ],
             'relationship' => array_filter([
-'cars' => $this->cars->map(fn($car) => ['car_id' => $car->id]),
+'cars' => $this->cars->map(fn($car) => [
+    'id' => $car->id,
+    'name' => $car->name,
+    'color' => $car->color,
+    'plate_number' => $car->plate_number,
+    'status' => $car->status,
+    'image' => $car->image ? asset($car->image) : null,
+    // ضيفي أي خصائص تانية حسب جدولك
+]),
+
+
 
                 'Model Names' => [
                     'model_name_id' => (string)$this->modelName->id,

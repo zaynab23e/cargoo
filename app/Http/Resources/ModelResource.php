@@ -31,7 +31,7 @@ class ModelResource extends JsonResource
 
             ],
             'relationship' => array_filter([
-
+            'car Id' => (string)$this->id,
 
                 'Model Names' => [
                     'model_name_id' => (string)$this->modelName->id,

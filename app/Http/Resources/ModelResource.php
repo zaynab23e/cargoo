@@ -33,8 +33,8 @@ class ModelResource extends JsonResource
             'relationship' => array_filter([
 'cars' => $this->cars->map(fn($car) => [
     'id' => $car->id,
-    'Capacity' => $car->Capacity,
-    'Description' => $car->Description,
+    'capacity' => $car->Capacity,
+    'description' => $car->Description,
     'color' => $car->color,
     'plate_number' => $car->plate_number,
     'status' => $car->status,

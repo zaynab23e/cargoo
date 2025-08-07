@@ -23,4 +23,10 @@ class ModelName extends Model
     {
         return $this->hasMany(CarModel::class, 'model_name_id');
     }
+
+    public function model()
+{
+    return $this->belongsTo(Model::class);
+}
+
 }

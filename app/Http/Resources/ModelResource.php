@@ -31,6 +31,10 @@ class ModelResource extends JsonResource
 
             ],
             'relationship' => array_filter([
+                'Model' => [
+    'model_id' => optional($this->modelName->model)->id,
+    'model_name' => optional($this->modelName->model)->name,
+],
                 'Model Names' => [
                     'model_name_id' => (string)$this->modelName->id,
                     'model_name' => $this->modelName->name,

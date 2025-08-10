@@ -92,28 +92,28 @@ class HomePageController extends Controller
             ];
         });
 
-        return response()->json([
-            'data' => $data,
-            'links' => [
-                'first' => $models->url(1),
-                'last' => $models->url($models->lastPage()),
-                'prev' => $models->previousPageUrl(),
-                'next' => $models->nextPageUrl(),
-            ],
-            'meta' => [
-                'current_page' => $models->currentPage(),
-                'from' => $models->firstItem(),
-                'last_page' => $models->lastPage(),
-                'links' => $models->linkCollection()->toArray(),
-                'path' => $models->path(),
-                'per_page' => $models->perPage(),
-                'to' => $models->lastItem(),
-                'total' => $models->total(),
-            ],
-        ]);
-    //         $models = $query->paginate(10);
+        // return response()->json([
+        //     'data' => $data,
+        //     'links' => [
+        //         'first' => $models->url(1),
+        //         'last' => $models->url($models->lastPage()),
+        //         'prev' => $models->previousPageUrl(),
+        //         'next' => $models->nextPageUrl(),
+        //     ],
+        //     'meta' => [
+        //         'current_page' => $models->currentPage(),
+        //         'from' => $models->firstItem(),
+        //         'last_page' => $models->lastPage(),
+        //         'links' => $models->linkCollection()->toArray(),
+        //         'path' => $models->path(),
+        //         'per_page' => $models->perPage(),
+        //         'to' => $models->lastItem(),
+        //         'total' => $models->total(),
+        //     ],
+        // ]);
+            $models = $query->paginate(10);
 
-    //     return ModelResource::collection($models);
+        return ModelResource::collection($models);
     }
 
     public function show($id)

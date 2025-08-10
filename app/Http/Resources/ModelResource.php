@@ -9,9 +9,9 @@ class ModelResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // تحقق من اسم الراوت لتحديد ما إذا كنا في صفحة التفاصيل أو صفحة عرض الموديل
         $isShowDetailsRoute = $request->routeIs('show-details');
         $isShowRoute = $request->routeIs('show-model');
+        $shouldLoadImages = ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images');
 
         return [
             'id' => (string) $this->id,
@@ -24,11 +24,7 @@ class ModelResource extends JsonResource
                 'seats_count' => $this->seats_count,
                 'acceleration' => $this->acceleration,
                 'image' => $this->image ? asset($this->image) : null,
-
-                // اسم الموديل
                 'model_name' => $this->modelName ? $this->modelName->name : null,
-
-                // اسم البراند (مرتبط من خلال النوع)
                 'brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand
                     ? $this->modelName->type->brand->name
                     : null,
@@ -46,16 +42,26 @@ class ModelResource extends JsonResource
                     ]);
                 }),
 
-                'images' => ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images')
-                    ? $this->images->map(fn($image) => $image->image ? asset($image->image) : null)
+                'images' => $shouldLoadImages
+                    ? $this->images->filter(fn($image) => $image->image)
+                                   ->map(fn($image) => asset($image->image))
+                                   ->values()
                     : null,
 
-                'types' => $this->modelName && $this->modelName->type
-                    ? [
-                        'type_id' => (string) $this->modelName->type->id,
-                        'type_name' => $this->modelName->type->name,
-                    ]
-                    : null,
+                'model_names' => $this->modelName ? [
+                    'model_name_id' => (string) $this->modelName->id,
+                    'model_name' => $this->modelName->name,
+                ] : null,
+
+                'types' => $this->modelName && $this->modelName->type ? [
+                    'type_id' => (string) $this->modelName->type->id,
+                    'type_name' => $this->modelName->type->name,
+                ] : null,
+
+                'brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand ? [
+                    'brand_id' => $this->modelName->type->brand->id,
+                    'brand_name' => $this->modelName->type->brand->name,
+                ] : null,
 
                 'ratings' => array_filter([
                     'average_rating' => $this->avgRating() ? number_format($this->avgRating(), 1) : null,
@@ -70,8 +76,8 @@ class ModelResource extends JsonResource
                             'review' => $rating->review,
                         ])
                         : null,
-                ]),
-            ]),
+                ], fn($value) => !is_null($value)),
+            ], fn($value) => !is_null($value)),
         ];
     }
 }

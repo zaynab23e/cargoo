@@ -15,7 +15,7 @@ class HomePageController extends Controller
     { 
         $query = CarModel::with([
                 'modelName.type.brand',
-                'cars.images'
+                'cars.images' ,'cars'
             ])
             ->latest();
 
@@ -162,4 +162,4 @@ class HomePageController extends Controller
             'min_price' => $minPrice,
         ]);
     }
-}
+}  

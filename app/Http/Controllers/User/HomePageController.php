@@ -21,18 +21,21 @@ class HomePageController extends Controller
 
         // فلترة اختيارية
         if ($request->filled('brand')) {
-            $query->whereHas('modelName.type.brand', fn($q) => 
-                $q->where('name', 'like', '%' . $request->brand . '%'));
+            $query->whereHas('modelName.type.brand', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->brand . '%');
+            });
         }
 
         if ($request->filled('type')) {
-            $query->whereHas('modelName.type', fn($q) => 
-                $q->where('name', 'like', '%' . $request->type . '%'));
+            $query->whereHas('modelName.type', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->type . '%');
+            });
         }
 
         if ($request->filled('model')) {
-            $query->whereHas('modelName', fn($q) => 
-                $q->where('name', 'like', '%' . $request->model . '%'));
+            $query->whereHas('modelName', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->model . '%');
+            });
         }
 
         if ($request->has('year')) {
@@ -49,7 +52,11 @@ class HomePageController extends Controller
 
         // جلب البيانات بعد التعديلات
         $models = $query->paginate(10);
-        $models->each->refresh();
+
+        // تحديث كل موديل على حدة
+        foreach ($models as $model) {
+            $model->refresh();
+        }
 
         return ModelResource::collection($models);
     }
@@ -74,13 +81,15 @@ class HomePageController extends Controller
     public function filterInfo()
     {
         $brands = Brand::get(['id', 'name', 'logo'])
-            ->map(fn($brand) => [
-                'id' => (string) $brand->id,
-                'attributes' => [
-                    'name' => $brand->name,
-                    'logo' => $brand->logo ? asset($brand->logo) : null,
-                ],
-            ]);
+            ->map(function ($brand) {
+                return [
+                    'id' => (string) $brand->id,
+                    'attributes' => [
+                        'name' => $brand->name,
+                        'logo' => $brand->logo ? asset($brand->logo) : null,
+                    ],
+                ];
+            });
 
         $types = Type::pluck('name')
             ->map(fn($type) => strtolower($type))

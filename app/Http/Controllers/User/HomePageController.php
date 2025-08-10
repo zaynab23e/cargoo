@@ -12,11 +12,21 @@ use Illuminate\Http\Request;
 class HomePageController extends Controller
 {
     public function index(Request $request)
-    { 
-        $query = CarModel::with([
-                'modelName.type.brand',
-                'cars.images'
-            ])
+    {
+        $query = CarModel::with(['modelName.type.brand', 'cars.images'])
+            ->whereHas('cars') // نتأكد إن الموديل له سيارات
+            ->select(
+                'id',
+                'year',
+                'price',
+                'engine_type',
+                'transmission_type',
+                'seat_type',
+                'seats_count',
+                'acceleration',
+                'image',
+                'model_name_id'
+            )
             ->latest();
 
         if ($request->filled('brand')) {
@@ -49,31 +59,36 @@ class HomePageController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        $models = $query->paginate(10);
+        // حافظ على query params في روابط الباجينيشن
+        $models = $query->paginate(10)->appends($request->query());
 
-        foreach ($models as $model) {
-            $model->refresh();
-        }
-
-        // لازم تحمل cars relation علشان ترجعهم في ال Resource
-    $carModels = CarModel::with('cars')->paginate(10);
-
-    return ModelResource::collection($carModels);
+        return ModelResource::collection($models);
     }
 
     public function show($id)
     {
-        $model = CarModel::with([
-                'modelName.type.brand',
-                'cars.images'
-            ])
+        $model = CarModel::with(['modelName.type.brand', 'cars.images'])
+            ->select(
+                'id',
+                'year',
+                'price',
+                'engine_type',
+                'transmission_type',
+                'seat_type',
+                'seats_count',
+                'acceleration',
+                'image',
+                'model_name_id'
+            )
             ->find($id);
 
-        if (!$model) {
+        if (! $model) {
             return response()->json(['message' => __('messages.model_not_found')], 404);
         }
 
-        $model->refresh();
+        if (! $model->modelName || ! $model->modelName->type || ! $model->modelName->type->brand) {
+            return response()->json(['message' => __('messages.model_not_belonging')], 403);
+        }
 
         return new ModelResource($model);
     }
@@ -107,4 +122,4 @@ class HomePageController extends Controller
             'min_price' => $minPrice,
         ]);
     }
-}  
+}

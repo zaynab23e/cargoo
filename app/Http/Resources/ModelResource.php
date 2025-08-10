@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ModelResource extends JsonResource
                 'image' => $this->image ? asset($this->image) : null,
             ],
             'relationship' => array_filter([
-                'cars' => $this->whenLoaded('cars', function () {
+      'cars' => $this->whenLoaded('cars', function () {
                     return $this->cars->map(fn($car) => [
                         'id' => $car->id,
                         'capacity' => $car->capacity,
@@ -35,24 +36,22 @@ class ModelResource extends JsonResource
                         'image' => $car->image ? asset($car->image) : null,
                     ]);
                 }),
-                'model_names' => $this->modelName ? [
+                'Model Names' => $this->modelName ? [
                     'model_name_id' => (string) $this->modelName->id,
                     'model_name' => $this->modelName->name,
                 ] : null,
-                'images' => ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images')
-                    ? $this->images->filter(fn($image) => $image->image)
-                                   ->map(fn($image) => asset($image->image))
-                                   ->values()
+                'Images' => ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images')
+                    ? $this->images->map(fn($image) => $image->image ? asset($image->image) : null)
                     : null,
-                'types' => $this->modelName && $this->modelName->type ? [
+                'Types' => $this->modelName && $this->modelName->type ? [
                     'type_id' => (string) $this->modelName->type->id,
                     'type_name' => $this->modelName->type->name,
                 ] : null,
-                'brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand ? [
+                'Brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand ? [
                     'brand_id' => $this->modelName->type->brand->id,
                     'brand_name' => $this->modelName->type->brand->name,
                 ] : null,
-                'ratings' => array_filter([
+                'Ratings' => array_filter([
                     'average_rating' => $this->avgRating() ? number_format($this->avgRating(), 1) : null,
                     'ratings_count' => $this->whenLoaded('ratings', fn() => $this->ratings->count()),
                     'reviews' => $isShowDetailsRoute && $this->relationLoaded('ratings')
@@ -65,8 +64,8 @@ class ModelResource extends JsonResource
                             'review' => $rating->review,
                         ])
                         : null,
-                ], fn($value) => !is_null($value)),
-            ], fn($value) => !is_null($value)),
+                ]),
+            ]),
         ];
     }
 }

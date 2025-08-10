@@ -15,7 +15,7 @@ class HomePageController extends Controller
     { 
         $query = CarModel::with([
                 'modelName.type.brand',
-                'cars.images','cars'
+                'cars.images'
             ])
             ->latest();
 

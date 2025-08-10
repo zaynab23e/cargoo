@@ -60,7 +60,7 @@ class HomePageController extends Controller
         }
 
         // حافظ على query params في روابط الباجينيشن
-        $models = $query->paginate(10)->appends($request->query());
+        $models = $query->paginate(10);
 
         return ModelResource::collection($models);
     }

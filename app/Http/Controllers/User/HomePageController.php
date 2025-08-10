@@ -55,9 +55,10 @@ class HomePageController extends Controller
             $model->refresh();
         }
 
-            $models = $query->paginate(10);
+        // لازم تحمل cars relation علشان ترجعهم في ال Resource
+    $carModels = CarModel::with('cars')->paginate(10);
 
-        return ModelResource::collection($models);
+    return ModelResource::collection($carModels);
     }
 
     public function show($id)

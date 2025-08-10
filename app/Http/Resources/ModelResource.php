@@ -36,22 +36,24 @@ class ModelResource extends JsonResource
                         'image' => $car->image ? asset($car->image) : null,
                     ]);
                 }),
-                'Model Names' => $this->modelName ? [
+                'model_names' => $this->modelName ? [
                     'model_name_id' => (string) $this->modelName->id,
                     'model_name' => $this->modelName->name,
                 ] : null,
-                'Images' => ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images')
-                    ? $this->images->map(fn($image) => $image->image ? asset($image->image) : null)
+                'images' => ($isShowDetailsRoute || $isShowRoute) && $this->relationLoaded('images')
+                    ? $this->images->filter(fn($image) => $image->image)
+                                   ->map(fn($image) => asset($image->image))
+                                   ->values()
                     : null,
-                'Types' => $this->modelName && $this->modelName->type ? [
+                'types' => $this->modelName && $this->modelName->type ? [
                     'type_id' => (string) $this->modelName->type->id,
                     'type_name' => $this->modelName->type->name,
                 ] : null,
-                'Brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand ? [
+                'brand' => $this->modelName && $this->modelName->type && $this->modelName->type->brand ? [
                     'brand_id' => $this->modelName->type->brand->id,
                     'brand_name' => $this->modelName->type->brand->name,
                 ] : null,
-                'Ratings' => array_filter([
+                'ratings' => array_filter([
                     'average_rating' => $this->avgRating() ? number_format($this->avgRating(), 1) : null,
                     'ratings_count' => $this->whenLoaded('ratings', fn() => $this->ratings->count()),
                     'reviews' => $isShowDetailsRoute && $this->relationLoaded('ratings')
@@ -64,8 +66,8 @@ class ModelResource extends JsonResource
                             'review' => $rating->review,
                         ])
                         : null,
-                ]),
-            ]),
+                ], fn($value) => !is_null($value)),
+            ], fn($value) => !is_null($value)),
         ];
     }
 }

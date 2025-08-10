@@ -15,7 +15,7 @@ class HomePageController extends Controller
     { 
         $query = CarModel::with([
                 'modelName.type.brand',
-                'cars.images'
+                'cars.images' 
             ])
             ->latest();
 
@@ -55,10 +55,9 @@ class HomePageController extends Controller
             $model->refresh();
         }
 
-        // لازم تحمل cars relation علشان ترجعهم في ال Resource
-    $carModels = CarModel::with('cars')->paginate(10);
+            $models = $query->paginate(10);
 
-    return ModelResource::collection($carModels);
+        return ModelResource::collection($models);
     }
 
     public function show($id)

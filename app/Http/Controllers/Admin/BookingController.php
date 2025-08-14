@@ -25,7 +25,7 @@ class BookingController extends Controller
             return response()->json([
                 'message' => __('messages.no_bookings'),
                 'data' => []
-            ], 404);
+            ]);
         }
 
         $data = $bookings->map(function ($booking) {
@@ -51,7 +51,7 @@ public function CompletedBooking()
                 return response()->json([
                     'message' => __('messages.no_bookings'),
                     'data' => []
-                ], 404);
+                ]);
             }
 
         $data = $bookings->map(function ($booking) {
@@ -78,7 +78,7 @@ public function CompletedBooking()
                 return response()->json([
                     'message' => __('messages.no_bookings'),
                     'data' => []
-                ], 404);
+                ]);
             }
             
             $data = $bookings->map(function ($booking) {
@@ -110,7 +110,7 @@ public function CompletedBooking()
                     return response()->json([
                         'message' => __('messages.no_bookings'),
                         'data' => []
-                    ], 404);
+                    ]);
                 }
                 
                 $data = $bookings->map(function ($booking) {
@@ -135,7 +135,7 @@ public function allCanceledBooking(){
         return response()->json([
             'message' => __('messages.no_bookings'),
             'data' => []
-        ], 404);
+        ]);
     }
 
     $data = $bookings->map(function ($booking) {
@@ -275,7 +275,7 @@ public function gitAssignCar(){
         return response()->json([
             'message' => __('messages.no_bookings'),
             'data' => []
-        ], 404);
+        ]);
     }
 
     $data = $bookings->map(function ($booking) {
@@ -377,7 +377,7 @@ public function NewBookings()
         return response()->json([
             'message' => __('messages.no_bookings'),
             'data' => []
-        ], 404);
+        ]);
     }
 
     $data = $bookings->map(function ($booking) {
